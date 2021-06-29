@@ -17,6 +17,10 @@ locale.setlocale(locale.LC_TIME, "pt_BR")
 
 versao = 'Versão S-1.0 (consolidada até NT nº 02/2021)'
 
+if len(sys.argv) < 2:
+    print('Uso: python xsd_html.py CAMINHO_LEIAUTES')
+    exit()
+
 caminho_xsd = os.path.join(sys.argv[1], '{}')
 caminho_doc = os.path.join(os.getcwd(), 'doc', '{}')
 caminho_ativos = os.path.join(os.getcwd(), 'ativos', '{}')
