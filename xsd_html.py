@@ -15,7 +15,7 @@ from xml.etree.ElementTree import parse
 sys.dont_write_bytecode = True
 locale.setlocale(locale.LC_TIME, "pt_BR")
 
-versao = 'Versão S-1.0 (consolidada até NT nº 02/2021)'
+versao = 'Versão S-1.0 (consolidada até NT nº 03/2021)'
 
 if len(sys.argv) < 2:
     print('Uso: python xsd_html.py CAMINHO_LEIAUTES')
@@ -56,7 +56,7 @@ arquivo.close()
 inicio_tempo = perf_counter()
 
 conteudo = inicio.replace(
-    'SUBTITULO', 'eSocial versão S-1.0 - Regras (cons. até NT 02/2021)').replace(
+    'SUBTITULO', 'eSocial versão S-1.0 - Regras (cons. até NT 03/2021)').replace(
     'TITULO', 'eSocial versão S-1.0 - Regras').replace(
     'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO II DOS LEIAUTES DO eSOCIAL<br />REGRAS DE VALIDAÇÃO</h1>').replace(
     'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
@@ -89,7 +89,7 @@ for identificador in identificadores:
 leiautes.sort(key=lambda item: item.codigo)
 
 conteudo = inicio.replace(
-    'SUBTITULO', 'eSocial versão S-1.0 - Leiautes (cons. até NT 02/2021)').replace(
+    'SUBTITULO', 'eSocial versão S-1.0 - Leiautes (cons. até NT 03/2021)').replace(
     'TITULO', 'eSocial versão S-1.0 - Leiautes').replace(
     'TEXTO_1', (
         '<h1 class="title has-text-centered is-3">LEIAUTES DO eSOCIAL'
@@ -328,7 +328,7 @@ for tabela in sorted(os.listdir(caminho_tabelas.replace('{}', ''))):
     tabelas.append(tabela[:-4])
 
 conteudo = inicio.replace(
-    'SUBTITULO', 'eSocial versão S-1.0 - Tabelas (cons. até NT 02/2021)').replace(
+    'SUBTITULO', 'eSocial versão S-1.0 - Tabelas (cons. até NT 03/2021)').replace(
     'TITULO', 'eSocial versão S-1.0 - Tabelas').replace(
     'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO I DOS LEIAUTES DO eSOCIAL<br />TABELAS</h1>').replace(
     'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
