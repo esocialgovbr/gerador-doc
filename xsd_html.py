@@ -15,22 +15,41 @@ from xml.etree.ElementTree import parse
 sys.dont_write_bytecode = True
 locale.setlocale(locale.LC_TIME, "pt_BR")
 
-versao = 'Versão S-1.0 (consolidada até NT nº 03/2021)'
-
 if len(sys.argv) < 2:
     print('Uso: python xsd_html.py CAMINHO_LEIAUTES')
     exit()
 
 caminho_xsd = os.path.join(sys.argv[1], '{}')
-caminho_doc = os.path.join(os.getcwd(), 'doc', '{}')
 caminho_ativos = os.path.join(os.getcwd(), 'ativos', '{}')
+caminho_doc = os.path.join(sys.argv[1], 'doc', '{}')
 caminho_saida = os.path.join(sys.argv[1], 'doc', 'saida', '{}')
 caminho_texto = os.path.join(sys.argv[1], 'doc', 'txt', '{}')
+
+parametros = cinto.obter_arquivo(caminho_doc.format('parametros_texto_inicial')).read().split('\n')
+
+for parametro in parametros:
+    if 'VERSAO' in parametro:
+        _, versao = parametro.split(' = ')
+        versao_m = re.sub('([a-zA-Z])', lambda x: x.groups()[0].upper(), versao, 1)
+
+    if 'PUBLICACAO' in parametro:
+        _, publicacao = parametro.split(' = ')
+        publicacao_reduzida = publicacao.replace('consolidada', 'cons.').replace('nº ', '')
+
+    if 'DATA' in parametro:
+        _, data = parametro.split(' = ')
+
+        data_atual = datetime.date.today().strftime('%B de %Y').capitalize()
+
+        if data != data_atual:
+            print('A data informada no parâmetro de configuração é diferente da data atual.')
+
+    if 'DETALHES' in parametro:
+        _, detalhes_publicacao = parametro.split(' = ')
 
 inicio = cinto.obter_arquivo(caminho_ativos.format('inicio.html')).read()
 fim = cinto.obter_arquivo(caminho_ativos.format('fim.html')).read()
 
-# REGRAS
 regras = {}
 
 arquivo = cinto.obter_arquivo(caminho_xsd.format('regras.txt'))
@@ -55,29 +74,10 @@ arquivo.close()
 
 inicio_tempo = perf_counter()
 
-conteudo = inicio.replace(
-    'SUBTITULO', 'eSocial versão S-1.0 - Regras (cons. até NT 03/2021)').replace(
-    'TITULO', 'eSocial versão S-1.0 - Regras').replace(
-    'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO II DOS LEIAUTES DO eSOCIAL<br />REGRAS DE VALIDAÇÃO</h1>').replace(
-    'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
-        versao))
-
-conteudo += Regra.CABECALHO
-
-for regra in regras:
-    texto = '<br />\n'.join(regras[regra])
-    conteudo += Regra.LINHA.format(
-        id=regra, nome=regra, texto=texto)
-
-conteudo += Geral.RODAPE_TABELA
-conteudo += fim
-
-with cinto.obter_arquivo(caminho_saida.format('regras.html'), 'w') as f:
-    f.write(conteudo)
-
 # LEIAUTES
 leiautes = []
-identificadores = [item for item in os.listdir(sys.argv[1]) if item.startswith('evt')]
+identificadores = [item for item in os.listdir(
+    sys.argv[1]) if item.startswith('evt')]
 
 tipos_globais = {tipo.get('name'): tipo
                  for tipo in parse(caminho_xsd.format('tipos.xsd')).getroot()}
@@ -89,18 +89,15 @@ for identificador in identificadores:
 leiautes.sort(key=lambda item: item.codigo)
 
 conteudo = inicio.replace(
-    'SUBTITULO', 'eSocial versão S-1.0 - Leiautes (cons. até NT 03/2021)').replace(
-    'TITULO', 'eSocial versão S-1.0 - Leiautes').replace(
+    'SUBTITULO',  f'eSocial {versao} - Leiautes {publicacao_reduzida}').replace(
+    'TITULO', f'eSocial {versao} - Leiautes').replace(
     'TEXTO_1', (
         '<h1 class="title has-text-centered is-3">LEIAUTES DO eSOCIAL'
         '<br /><br />'
         '{}</h1>'
-        '<h2 class="title has-text-centered is-5">(aprovada pela Portaria Conjunta nº 82, de 10/11/2020 – DOU de 11/11/2020)</h2>'
-        '<h2 class="title has-text-centered is-5" style="font-weight: normal">Observações: 1) Implantação no ambiente de produção: 19/07/2021'
-        '<br />'
-        '2) Período de convivência de versões (2.5 e S-1.0): 19/07/2021 a 09/03/2022</h2>'.format(versao))).replace(
-    'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
-        datetime.date.today().strftime('%B de %Y').capitalize()))
+        f'{detalhes_publicacao}'
+        .format(f'{versao_m} {publicacao}'))).replace(
+    'TEXTO_2', f'<h1 class="title has-text-centered is-3">{data}</h1>')
 
 conteudo_indice = ''
 for leiaute in leiautes:
@@ -126,6 +123,45 @@ conteudo += html
 conteudo += fim
 
 with cinto.obter_arquivo(caminho_saida.format('index.html'), 'w') as f:
+    f.write(conteudo)
+
+referencias_regras = {}
+
+for leiaute in leiautes:
+    for regra in leiaute.referencias_regras:
+        if regra not in referencias_regras:
+            referencias_regras[regra] = []
+
+        referencias_regras[regra].extend(leiaute.referencias_regras[regra])
+
+# REGRAS
+conteudo = inicio.replace(
+    'SUBTITULO',  f'eSocial {versao} - Regras {publicacao_reduzida}').replace(
+    'TITULO', f'eSocial {versao} - Regras').replace(
+    'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO II DOS LEIAUTES DO eSOCIAL<br />REGRAS DE VALIDAÇÃO</h1>').replace(
+    'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
+        f'{versao_m} {publicacao}'))
+
+conteudo += '_referencias_' + Regra.CABECALHO
+conteudo_modal = ''
+
+for regra in regras:
+    texto = '<br />\n'.join(regras[regra])
+    conteudo += Regra.LINHA.format(
+        id=regra, nome=regra, texto=texto)
+
+    texto_modal = '\n'.join([Regra.LINHA_REFERENCIA.format(
+        id=ocorrencia[0], trilha=ocorrencia[1]) for ocorrencia in referencias_regras[regra]])
+
+    conteudo_modal += Regra.LINHA_MODAL_REFERENCIA.format(
+        nome=regra, texto=texto_modal)
+
+conteudo = conteudo.replace('_referencias_', conteudo_modal)
+
+conteudo += Geral.RODAPE_TABELA
+conteudo += fim
+
+with cinto.obter_arquivo(caminho_saida.format('regras.html'), 'w') as f:
     f.write(conteudo)
 
 # TABELAS
@@ -288,8 +324,8 @@ for tabela in sorted(os.listdir(caminho_tabelas.replace('{}', ''))):
 
         for itens in itens_cabecalho:
             conteudo_cabecalho.append(''.join(itens).replace(
-                        ' class="grupo"', '').replace(
-                        ' rowspan=""', '').replace(' colspan=""', ''))
+                ' class="grupo"', '').replace(
+                ' rowspan=""', '').replace(' colspan=""', ''))
 
         linha_cabecalho = '</tr>\n<tr>\n'.join(
             conteudo_cabecalho)
@@ -328,11 +364,11 @@ for tabela in sorted(os.listdir(caminho_tabelas.replace('{}', ''))):
     tabelas.append(tabela[:-4])
 
 conteudo = inicio.replace(
-    'SUBTITULO', 'eSocial versão S-1.0 - Tabelas (cons. até NT 03/2021)').replace(
-    'TITULO', 'eSocial versão S-1.0 - Tabelas').replace(
+    'SUBTITULO',  f'eSocial {versao} - Tabelas {publicacao_reduzida}').replace(
+    'TITULO', f'eSocial {versao} - Tabelas').replace(
     'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO I DOS LEIAUTES DO eSOCIAL<br />TABELAS</h1>').replace(
     'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
-        versao))
+        f'{versao_m} {publicacao}'))
 
 conteudo += '<h2 class="title has-text-centered is-3">Sumário</h2>\n'
 conteudo += '<ul class="sumario">\n'

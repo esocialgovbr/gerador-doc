@@ -40,7 +40,7 @@ class Tabela:
 class Regra:
     LINHA = (
         '<tr>\n'
-        '<td id="{id}"><strong>{nome}</strong></td>\n'
+        '<td id="{id}"><a title="Ver ocorrências"><strong>{nome}</strong></a></td>\n'
         '<td>{texto}</td>\n'
         '</tr>\n')
 
@@ -49,11 +49,28 @@ class Regra:
         '<div class="modal-background"></div>\n'
         '<div class="modal-card">\n'
         '<header class="modal-card-head">\n'
-        '<p class="modal-card-title">{nome}</p>\n'
+        '<p class="modal-card-title"><a href="regras.html#{nome}">{nome}</a></p>\n'
         '<button class="delete" aria-label="close"></button>\n'
         '</header>\n'
         '<div class="modal-card-body">\n'
         '<p>{texto}</p>\n'
+        '</div>\n'
+        '</div>\n'
+        '</div>\n')
+
+    LINHA_REFERENCIA = (
+        '<li><a href="index.html#{id}">{trilha}</a></li>')
+
+    LINHA_MODAL_REFERENCIA = (
+        '<div class="modal" id="r_{nome}">\n'
+        '<div class="modal-background"></div>\n'
+        '<div class="modal-card">\n'
+        '<header class="modal-card-head">\n'
+        '<p class="modal-card-title">{nome}</p>\n'
+        '<button class="delete" aria-label="close"></button>\n'
+        '</header>\n'
+        '<div class="modal-card-body">\n'
+        '<ul>{texto}</ul>\n'
         '</div>\n'
         '</div>\n'
         '</div>\n')

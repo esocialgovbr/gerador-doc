@@ -46,12 +46,14 @@ class Leiaute:
         """
         self.tipos_locais = {}
 
+        self.referencias_regras = {}
+
         for complex_type in xml.findall('base:complexType', NS):
             self.tipos_locais[complex_type.attrib['name']] = complex_type
 
         esocial = xml.find('base:element', NS)
 
-        doc = esocial.find(ANNOTATION, NS).getchildren()[0]
+        doc = list(esocial.find(ANNOTATION, NS))[0]
 
         if not doc.text.startswith('S-'):
             raise Exception(
@@ -340,7 +342,14 @@ class ItemLeiaute:
                                    for chave in texto[13:].split(', ')]
 
                 elif texto.startswith('REGRA:'):
-                    self.regras.append(texto[6:])
+                    nome_regra = texto[6:]
+                    self.regras.append(nome_regra)
+
+                    if nome_regra not in self.leiaute.referencias_regras:
+                        self.leiaute.referencias_regras[nome_regra] = []
+
+                    self.leiaute.referencias_regras[nome_regra].append(
+                        (self.caminho, self.gerar_trilha()))
 
                 elif texto.startswith('CONDICAO_GRUPO: '):
                     if ';' in texto:
@@ -410,7 +419,7 @@ class ItemLeiaute:
                     for enum in restriction.findall('base:enumeration', NS):
                         annotation = enum.find(ANNOTATION, NS)
                         if annotation:
-                            descricoes = annotation.getchildren()
+                            descricoes = list(annotation)
 
                             if len(descricoes) == 1:
                                 valor = cinto.codificar_sobrescrito(
@@ -732,6 +741,24 @@ class ItemLeiaute:
         else:
             raise Exception(
                 'O tamanho do item {} não foi identificado.'.format(self.nome))
+
+    def gerar_trilha(self):
+        """Gera uma trilha da hierarquia do item.
+
+        Returns:
+            str: Trilha com hierarquia até o item.
+        """
+        trilha = ''
+
+        if self.pai is not None:
+            if self.pai.pai is None:
+                trilha = ''
+            else:
+                trilha = self.pai.gerar_trilha() + ' &gt; '
+        else:
+            return ''
+
+        return trilha + self.nome
 
     def gerar_link_pai(self):
         """Gera um link para o pai do item, caso exista.
