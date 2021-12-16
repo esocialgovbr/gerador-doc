@@ -155,7 +155,7 @@ class Resumo:
 
     LEGENDA = (
         '\n'
-        '<p class="is-size-6" style="margin-top: -1rem">* Campo chave do evento</p>\n')
+        '<p class="is-size-6" style="margin-top: -1rem; margin-bottom: 2rem;">* Campo chave do evento</p>\n')
 
 
 class Completo:
