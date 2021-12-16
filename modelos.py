@@ -153,6 +153,10 @@ class Resumo:
         '<strong>Condição</strong></td>\n'
         '</tr>\n')
 
+    LEGENDA = (
+        '\n'
+        '<p class="is-size-6" style="margin-top: -1rem">* Campo chave do evento</p>\n')
+
 
 class Completo:
     LINHA_TEXTO = (

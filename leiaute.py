@@ -127,7 +127,8 @@ class Leiaute:
             Resumo.CABECALHO.format(
                 self.nome, self.codigo, self.descricao)
             + self.raiz.gerar_html_resumo()
-            + Geral.RODAPE_TABELA)
+            + Geral.RODAPE_TABELA
+            + Resumo.LEGENDA)
 
         self.ultimo_numero = itertools.count(1)
 
@@ -700,9 +701,19 @@ class ItemLeiaute:
             else:
                 caminho = self.referencia.caminho
 
-            return ', '.join([
-                Geral.LINK.format('{}_{}'.format(caminho, chave), chave)
-                for chave in self.chaves])
+            chaves = []
+
+            for chave in self.chaves:
+                marca_chave_evento = ''
+
+                if chave.endswith('*'):
+                    chave = chave[:-1]
+                    marca_chave_evento = '*'
+
+                chaves.append(Geral.LINK.format('{}_{}'.format(
+                    caminho, chave), chave) + marca_chave_evento)
+
+            return ', '.join(chaves)
         else:
             return '-'
 

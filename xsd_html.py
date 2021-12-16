@@ -63,7 +63,10 @@ for linha in arquivo.readlines():
         if linha.strip() == '':
             id = None
         else:
-            texto = linha.rstrip()
+            texto = linha.rstrip().translate(str.maketrans({
+                '>': '&gt;',
+                '<': '&lt;',
+            }))
 
             for regra in set(re.findall(r'(REGRA_\w+)', texto)):
                 texto = texto.replace(
