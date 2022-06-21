@@ -262,9 +262,15 @@ class ItemLeiaute:
         elif tag == 'complexType':
             atributo = xml.find('base:attribute', NS)
 
-            if atributo is not None:
+            if atributo is not None and atributo.attrib['name'] == 'Id':
                 self.filhos.append(ItemLeiaute(
                     atributo, tipos_globais, leiaute, nivel + 1, self))
+
+            for filho in xml.findall('base:attribute', NS):
+                tag_filho = filho.tag[34:]
+
+                if tag_filho == 'attribute' and filho.attrib['name'] != 'Id':
+                    self.filhos.append(ItemLeiaute(filho, tipos_globais, leiaute, nivel, self))
 
             for filho in xml:
                 tag_filho = filho.tag[34:]
@@ -396,6 +402,9 @@ class ItemLeiaute:
                     maximo = 'N'
                 else:
                     maximo = atributos['maxOccurs']
+
+            if 'use' in atributos and atributos['use'] == 'optional':
+                minimo = 0
 
         self.ocorrencia = (minimo, maximo)
         self.valores_validos = {}
