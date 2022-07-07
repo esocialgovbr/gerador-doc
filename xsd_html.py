@@ -26,6 +26,7 @@ caminho_saida = os.path.join(sys.argv[1], 'doc', 'saida', '{}')
 caminho_texto = os.path.join(sys.argv[1], 'doc', 'txt', '{}')
 
 parametros = cinto.obter_arquivo(caminho_doc.format('parametros_texto_inicial')).read().split('\n')
+menu = cinto.obter_arquivo(caminho_doc.format('menu')).read()
 
 for parametro in parametros:
     if 'VERSAO' in parametro:
@@ -48,7 +49,8 @@ for parametro in parametros:
         _, detalhes_publicacao = parametro.split(' = ')
 
 inicio = cinto.obter_arquivo(caminho_ativos.format('inicio.html')).read()
-fim = cinto.obter_arquivo(caminho_ativos.format('fim.html')).read()
+fim = cinto.obter_arquivo(caminho_ativos.format('fim.html')).read().replace(
+    'MENU', menu)
 
 regras = {}
 
