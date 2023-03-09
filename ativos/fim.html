@@ -17,10 +17,43 @@ MENU
 <a href="regras.html">Regras de Validação</a>
 </div>
 </div>
+
+<div class="navbar-end">
+    <div class="navbar-item">
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" placeholder="Vá para um item" id="ir" />
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 </nav>
 <input id="copiador" type="text" />
 <script>
+document.addEventListener('keyup', (e) => {
+    if (e.ctrlKey && e.key == 'i') {
+        document.querySelector('#ir').focus();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#ir').addEventListener('keyup', (e) => {
+        if (e.code == 'Enter') {
+            const destino = document.querySelector('#r_' + e.currentTarget.value);
+
+            if (destino === null) {
+                window.alert('O item não foi encontrado.');
+                e.currentTarget.focus();
+            } else {
+                destino.scrollIntoView({ behavior: 'smooth' });
+                e.currentTarget.value = '';
+            }
+        }
+    });
+});
+
 document.querySelectorAll("a[href^='#REGRA_']").forEach(element => {
     element.onclick = function() {
         var modal_atual = document.querySelector("div[class~='is-active']")
