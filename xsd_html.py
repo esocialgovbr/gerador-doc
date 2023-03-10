@@ -345,7 +345,7 @@ for indice in range(1, len(sys.argv)):
                 conteudo_cabecalho)
 
             conteudo_tabela += cabecalho.format(
-                tabela[:-4], indice_item + 1, tabela[:-4], titulo, linha_cabecalho)
+                tabela[:-4], tabela[:-4], indice_item + 1, tabela[:-4], titulo, linha_cabecalho)
 
             for indice_linha, linha in enumerate(texto_tabela[linhas_cabecalho:]):
                 if 'class="grupo"' in linha[0]:

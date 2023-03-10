@@ -28,7 +28,7 @@ class Tabela:
         ' class="table is-fullwidth is-bordered tabela quebra-anterior">\n'
         '<thead>\n'
         '<tr>\n'
-        '<th colspan="{}">Tabela {} - {}</th>\n'
+        '<th id="t_{}" colspan="{}">Tabela {} - {}</th>\n'
         '</tr>\n'
         '<tr class="grupo">\n'
         '{}'

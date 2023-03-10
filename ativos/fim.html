@@ -41,7 +41,27 @@ document.addEventListener('keyup', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#ir').addEventListener('keyup', (e) => {
         if (e.code == 'Enter' || e.code == 'NumpadEnter') {
-            const destino = document.querySelector('#r_' + e.currentTarget.value);
+            let destino = null;
+            
+            if (e.currentTarget.value.length == 4)
+            {
+                document.querySelector('#r_' + e.currentTarget.value);
+            }
+
+            if (e.currentTarget.value.length == 6)
+            {
+                destino = document.querySelector('#r_' + e.currentTarget.value.substring(2, 6));
+            }
+
+            if (e.currentTarget.value.length == 2)
+            {
+                destino = document.querySelector('#t_' + e.currentTarget.value);
+            }
+
+            if (e.currentTarget.value.length > 6)
+            {
+                destino = document.querySelector('#' + e.currentTarget.value);
+            }
 
             if (destino === null) {
                 window.alert('O item não foi encontrado.');
