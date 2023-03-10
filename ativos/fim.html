@@ -17,17 +17,15 @@ MENU
 <a href="regras.html">Regras de Validação</a>
 </div>
 </div>
-
 <div class="navbar-end">
-    <div class="navbar-item">
-        <div class="field">
-            <div class="control">
-                <input class="input" type="text" placeholder="Vá para um item" id="ir" />
-            </div>
-        </div>
-    </div>
+<div class="navbar-item">
+<div class="field">
+<div class="control">
+<input class="input" type="text" placeholder="Vá para um item" id="ir" title="Informe o número do evento, da tabela ou uma regra" />
 </div>
-
+</div>
+</div>
+</div>
 </div>
 </nav>
 <input id="copiador" type="text" />
@@ -45,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (e.currentTarget.value.length == 4)
             {
-                document.querySelector('#r_' + e.currentTarget.value);
+                destino = document.querySelector('#r_' + e.currentTarget.value);
             }
 
             if (e.currentTarget.value.length == 6)
