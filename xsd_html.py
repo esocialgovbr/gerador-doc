@@ -98,6 +98,7 @@ for indice in range(1, len(sys.argv)):
 
     conteudo = inicio.replace(
         'SUBTITULO',  f'eSocial {versao} - Leiautes {publicacao_reduzida}').replace(
+        'DESCRICAO', f'{detalhes_publicacao}\n').replace(
         'TITULO', f'eSocial {versao} - Leiautes').replace(
         'TEXTO_1', (
             '<h1 class="title has-text-centered is-3">LEIAUTES DO eSOCIAL'
@@ -145,6 +146,7 @@ for indice in range(1, len(sys.argv)):
     # REGRAS
     conteudo = inicio.replace(
         'SUBTITULO',  f'eSocial {versao} - Regras {publicacao_reduzida}').replace(
+        'DESCRICAO', '').replace(
         'TITULO', f'eSocial {versao} - Regras').replace(
         'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO II DOS LEIAUTES DO eSOCIAL<br />REGRAS DE VALIDAÇÃO</h1>').replace(
         'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
@@ -379,6 +381,7 @@ for indice in range(1, len(sys.argv)):
 
     conteudo = inicio.replace(
         'SUBTITULO',  f'eSocial {versao} - Tabelas {publicacao_reduzida}').replace(
+        'DESCRICAO', '').replace(
         'TITULO', f'eSocial {versao} - Tabelas').replace(
         'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO I DOS LEIAUTES DO eSOCIAL<br />TABELAS</h1>').replace(
         'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
