@@ -97,8 +97,8 @@ for indice in range(1, len(sys.argv)):
     leiautes.sort(key=lambda item: item.codigo)
 
     conteudo = inicio.replace(
-        'SUBTITULO',  f'eSocial {versao} - Leiautes {publicacao_reduzida}').replace(
-        'DESCRICAO', f'{detalhes_publicacao}\n').replace(
+        'SUBTITULO', f'eSocial {versao} - Leiautes {publicacao_reduzida}').replace(
+        'DESCRICAO', f'<div class="is-hidden-print">{detalhes_publicacao}</div>\n').replace(
         'TITULO', f'eSocial {versao} - Leiautes').replace(
         'TEXTO_1', (
             '<h1 class="title has-text-centered is-3">LEIAUTES DO eSOCIAL'
