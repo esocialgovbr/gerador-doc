@@ -1,3 +1,4 @@
+import copy
 from enum import Enum
 import itertools
 import sys
@@ -48,9 +49,6 @@ class Leiaute:
 
         self.referencias_regras = {}
 
-        for complex_type in xml.findall('base:complexType', NS):
-            self.tipos_locais[complex_type.attrib['name']] = complex_type
-
         esocial = xml.find('base:element', NS)
 
         doc = list(esocial.find(ANNOTATION, NS))[0]
@@ -62,6 +60,28 @@ class Leiaute:
         self.codigo, self.descricao = doc.text.split(' - ', 1)
         self.primeira_ocorrencia_tipo = {}
         self.ultimo_numero = itertools.count(1)
+
+        for complex_type in xml.findall('base:complexType', NS):
+            complex_content = complex_type.find('base:complexContent', NS);
+
+            if complex_content is not None:
+                extension = complex_content.find('base:extension', NS)
+
+                tipo = extension.attrib['base']
+
+                if tipo in tipos_globais:
+                    copia = copy.deepcopy(tipos_globais[tipo])
+                else:
+                    copia = copy.deepcopy(self.tipos_locais[tipo])
+
+                copia.attrib['name'] = complex_type.attrib['name']
+
+                for element in extension.find('base:sequence', NS):
+                    copia.find('base:sequence', NS).append(element)
+
+                self.tipos_locais[copia.attrib['name']] = copia
+            else:
+                self.tipos_locais[complex_type.attrib['name']] = complex_type
 
         self.raiz = ItemLeiaute(esocial, tipos_globais, self)
 
