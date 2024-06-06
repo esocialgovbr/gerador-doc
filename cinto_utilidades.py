@@ -69,7 +69,7 @@ def resolver_referencias(texto, item):
         '<': '&lt;',
     }))
 
-    for ocorrencia in re.findall(r'\{([^\{\}]+)\}\(([^()]+)\)', texto):
+    for ocorrencia in re.findall(r'\{([^\{\}]*)\}\(([^()]+)\)', texto):
         nome = ocorrencia[0]
         endereco = ocorrencia[1]
 
@@ -96,9 +96,14 @@ def resolver_referencias(texto, item):
                 prefixo = item.pai.caminho
             endereco = '_'.join((prefixo, endereco[2:]))
 
+        nome_final = nome
+
+        if nome == '':
+            nome_final = endereco.split('_')[-1]
+
         texto = texto.replace(
             '{{{}}}({})'.format(nome, ocorrencia[1]),
-            Geral.LINK.format(endereco, nome))
+            Geral.LINK.format(endereco, nome_final))
 
     return re.sub(
         r'Tabela (\d{2})',
