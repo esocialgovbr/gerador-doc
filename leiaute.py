@@ -719,8 +719,13 @@ class ItemLeiaute:
                     chave = chave[:-1]
                     marca_chave_evento = '*'
 
+                rotulo = chave
+
+                if '_' in chave:
+                    rotulo = rotulo.replace('_', '/')
+
                 chaves.append(Geral.LINK.format('{}_{}'.format(
-                    caminho, chave), chave) + marca_chave_evento)
+                    caminho, chave), rotulo) + marca_chave_evento)
 
             return ', '.join(chaves)
         else:
