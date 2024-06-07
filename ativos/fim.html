@@ -21,14 +21,14 @@ MENU
 <div class="navbar-item">
 <div class="field">
 <div class="control">
-<input class="input" type="text" placeholder="Vá para um item" id="ir" title="Informe o número do evento, da tabela ou uma regra" />
+<input class="input" type="text" placeholder="Vá para um item" id="ir" title="Informe o número do evento, da tabela ou uma regra">
 </div>
 </div>
 </div>
 </div>
 </div>
 </nav>
-<input id="copiador" type="text" />
+<input id="copiador" type="text">
 <script>
 document.addEventListener('keyup', (e) => {
     if (e.ctrlKey && e.key == 'i') {
@@ -86,6 +86,19 @@ document.querySelectorAll("a[href^='#REGRA_']").forEach(element => {
                 document.querySelector("div[class~='is-active']").classList.remove('is-active')
             }
         }
+    }
+});
+
+var contador = 1
+
+document.querySelectorAll(".seletor").forEach(element => {
+    if (element.textContent == '#') {
+        contador = 1
+    }
+    else
+    {
+        element.textContent = contador
+        contador++
     }
 });
 

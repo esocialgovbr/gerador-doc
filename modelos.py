@@ -172,7 +172,7 @@ class Completo:
 
     LINHA = (
         '<tr{marcador_grupo}>\n'
-        '<td onclick="copiarCaminho.call(this)"'
+        '<td class="seletor" onclick="copiarCaminho.call(this)"'
         ' title="{caminho}"'
         ' id="{caminho}">{indice}</td>\n'
         '<td>'
@@ -209,7 +209,7 @@ class Completo:
         '<table class="table is-fullwidth is-bordered completo">\n'
         '<tbody>\n'
         '<tr>\n'
-        '<th>#</th>\n'
+        '<th class="seletor">#</th>\n'
         '<th>Grupo/Campo</th>\n'
         '<th>Grupo Pai</th>\n'
         '<th>Elem.</th>\n'

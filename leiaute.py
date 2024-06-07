@@ -569,7 +569,7 @@ class ItemLeiaute:
             nome = Geral.LINK.format('r_{}'.format(self.caminho), self.nome)
 
         html = modelo_linha.format(
-            indice=next(self.leiaute.ultimo_numero),
+            indice='',
             caminho=self.caminho,
             marcador_grupo=marcador_grupo,
             nome=nome,
@@ -655,9 +655,9 @@ class ItemLeiaute:
         else:
             descricoes = self.descricao
 
-        rotulo = '<br />\n<strong>{}</strong>'
+        rotulo = '<br>\n<strong>{}</strong>'
 
-        descricao = '<br />\n'.join([cinto.resolver_referencias(
+        descricao = '<br>\n'.join([cinto.resolver_referencias(
             descricao, self) for descricao in descricoes])
 
         if self.valores_validos:
@@ -666,13 +666,13 @@ class ItemLeiaute:
 
             for chave in self.valores_validos:
                 if self.valores_validos[chave] == '':
-                    descricao += '{}<br />\n{}'.format(linha_cabecalho, chave)
+                    descricao += '{}<br>\n{}'.format(linha_cabecalho, chave)
                 elif self.valores_validos[chave] is not None:
                     descricao += ' - '.join((
                         rotulo.format(chave), self.valores_validos[chave]))
 
                     if linha_cabecalho == '':
-                        linha_cabecalho = '<br />\n'
+                        linha_cabecalho = '<br>\n'
                 else:
                     descricao += ' {},'.format(chave)
 
@@ -680,17 +680,17 @@ class ItemLeiaute:
 
         if self.origem:
             descricao += rotulo.format('Origem:') + ' '
-            descricao += '<br />\n'.join([cinto.resolver_referencias(
+            descricao += '<br>\n'.join([cinto.resolver_referencias(
                 origem, self) for origem in self.origem])
 
         if self.evento_origem:
             descricao += rotulo.format('Evento de origem:') + ' '
-            descricao += '<br />\n'.join([cinto.resolver_referencias(
+            descricao += '<br>\n'.join([cinto.resolver_referencias(
                 origem, self) for origem in self.evento_origem])
 
         if self.validacao:
             descricao += rotulo.format('Validação:') + ' '
-            descricao += '<br />\n'.join([cinto.resolver_referencias(
+            descricao += '<br>\n'.join([cinto.resolver_referencias(
                 validacao, self) for validacao in self.validacao])
 
         if self.regras:
@@ -699,7 +699,7 @@ class ItemLeiaute:
                     's' if len(self.regras) > 1 else '')))
 
             for regra in self.regras:
-                descricao += '<br />\n' + \
+                descricao += '<br>\n' + \
                     Geral.LINK.format(regra, regra)
 
         return descricao
@@ -710,7 +710,7 @@ class ItemLeiaute:
         Returns:
             str: Descrição das condições de uso do item.
         """
-        return ';<br />\n'.join([
+        return ';<br>\n'.join([
             condicao if self.condicoes[condicao] is None else ' '.join(
                 (
                     condicao,

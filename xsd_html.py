@@ -102,7 +102,7 @@ for indice in range(1, len(sys.argv)):
         'TITULO', f'eSocial {versao} - Leiautes').replace(
         'TEXTO_1', (
             '<h1 class="title has-text-centered is-3">LEIAUTES DO eSOCIAL'
-            '<br /><br />'
+            '<br><br>'
             '{}</h1>'
             f'{detalhes_publicacao}'
             .format(f'{versao_m} {publicacao}'))).replace(
@@ -123,7 +123,7 @@ for indice in range(1, len(sys.argv)):
 
     html = ''
     for regra in regras:
-        texto = '<br />\n'.join(regras[regra])
+        texto = '<br>\n'.join(regras[regra])
         html += Regra.LINHA_MODAL.format(nome=regra, texto=texto)
 
     html += ''.join([item.gerar_html() for item in leiautes])
@@ -148,7 +148,7 @@ for indice in range(1, len(sys.argv)):
         'SUBTITULO',  f'eSocial {versao} - Regras {publicacao_reduzida}').replace(
         'DESCRICAO', '').replace(
         'TITULO', f'eSocial {versao} - Regras').replace(
-        'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO II DOS LEIAUTES DO eSOCIAL<br />REGRAS DE VALIDAÇÃO</h1>').replace(
+        'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO II DOS LEIAUTES DO eSOCIAL<br>REGRAS DE VALIDAÇÃO</h1>').replace(
         'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
             f'{versao_m} {publicacao}'))
 
@@ -156,7 +156,7 @@ for indice in range(1, len(sys.argv)):
     conteudo_modal = ''
 
     for regra in regras:
-        texto = '<br />\n'.join(regras[regra])
+        texto = '<br>\n'.join(regras[regra])
         conteudo += Regra.LINHA.format(
             id=regra, nome=regra, texto=texto)
 
@@ -383,7 +383,7 @@ for indice in range(1, len(sys.argv)):
         'SUBTITULO',  f'eSocial {versao} - Tabelas {publicacao_reduzida}').replace(
         'DESCRICAO', '').replace(
         'TITULO', f'eSocial {versao} - Tabelas').replace(
-        'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO I DOS LEIAUTES DO eSOCIAL<br />TABELAS</h1>').replace(
+        'TEXTO_1', '<h1 class="title has-text-centered is-3">ANEXO I DOS LEIAUTES DO eSOCIAL<br>TABELAS</h1>').replace(
         'TEXTO_2', '<h1 class="title has-text-centered is-3">{}</h1>'.format(
             f'{versao_m} {publicacao}'))
 
