@@ -34,7 +34,7 @@ for indice in range(1, len(sys.argv)):
     for parametro in parametros:
         if 'VERSAO' in parametro:
             _, versao = parametro.split(' = ')
-            versao_m = re.sub('([a-zA-Z])', lambda x: x.groups()[0].upper(), versao, 1)
+            versao_m = re.sub('([a-zA-Z])', lambda x: x.groups()[0].upper(), versao, count = 1)
 
         if 'PUBLICACAO' in parametro:
             _, publicacao = parametro.split(' = ')
