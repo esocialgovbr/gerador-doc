@@ -494,6 +494,10 @@ class ItemLeiaute:
                     if padrao is not None and self.tamanho_fixo is None:
                         regex = padrao.attrib['value']
 
+                        # Adaptações para CNPJ alfanumérico
+                        if regex == r'\d{8,14}|[A-Z0-9]{12}\d{2}':
+                            regex = r'\d{8,14}'
+
                         regex = regex.replace(r'[A-Z0-9]{8}', r'\d{8}').replace(r'[A-Z0-9]{12}\d{2}', r'\d{14}')
 
                         self.tamanho_lista = [int(item) for item in re.findall(
