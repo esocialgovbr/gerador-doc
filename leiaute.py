@@ -603,7 +603,8 @@ class ItemLeiaute:
         return html
 
     def gerar_html_resumo(self, modelo_linha=Resumo.LINHA,
-                          modelo_referencia=Resumo.REFERENCIA):
+                          modelo_referencia=Resumo.REFERENCIA,
+                          continuacoes=(), ultimo=True):
         """Gera a representação do item em HTML para a visão resumida.
 
         Args:
@@ -619,6 +620,16 @@ class ItemLeiaute:
         if self.referencia is not None:
             identificador = '_'.join((self.pai.nome, identificador))
 
+        conectores = ''.join(
+            Resumo.CONTINUACAO.format(posicao=1.375 + indice * 1.25)
+            for indice, continua in enumerate(continuacoes)
+            if continua)
+
+        if self.nivel > 1:
+            conectores += Resumo.RAMO.format(
+                classe='ultimo' if ultimo else 'continua',
+                posicao=1.375 + (self.nivel - 2) * 1.25)
+
         html = modelo_linha.format(
             link_completo=self.caminho,
             identificador_evento=self.leiaute.nome,
@@ -626,6 +637,8 @@ class ItemLeiaute:
             nome=self.nome,
             pai=self.gerar_link_pai(),
             nivel=self.nivel,
+            recuo=0.75 + (self.nivel - 1) * 1.25,
+            conectores=conectores,
             descricao=cinto.resolver_referencias(
                 self.descricao[0].rstrip('.'), None),
             ocorrencia=self.gerar_descricao_ocorrencia(),
@@ -633,20 +646,29 @@ class ItemLeiaute:
             condicao=self.gerar_descricao_condicoes(),
         )
 
-        for filho in self.filhos:
-            if filho.categoria.agrupadora():
-                if self.referencia is None:
-                    html += filho.gerar_html_resumo(
-                        modelo_linha, modelo_referencia)
-                else:
-                    html += modelo_referencia.format(
-                        nome=self.referencia.nome,
-                        nome_pai=self.referencia.pai.nome,
-                        id_pai=self.referencia.pai.caminho,
-                        id=self.referencia.caminho
-                    )
+        filhos = [filho for filho in self.filhos
+                  if filho.categoria.agrupadora()]
 
-                    break
+        for indice, filho in enumerate(filhos):
+            if self.referencia is None:
+                filho_continuacoes = continuacoes
+                if self.nivel > 1:
+                    filho_continuacoes += (not ultimo,)
+
+                html += filho.gerar_html_resumo(
+                    modelo_linha,
+                    modelo_referencia,
+                    filho_continuacoes,
+                    indice == len(filhos) - 1)
+            else:
+                html += modelo_referencia.format(
+                    nome=self.referencia.nome,
+                    nome_pai=self.referencia.pai.nome,
+                    id_pai=self.referencia.pai.caminho,
+                    id=self.referencia.caminho
+                )
+
+                break
 
         return html
 

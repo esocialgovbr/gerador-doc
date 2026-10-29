@@ -96,7 +96,9 @@ class Resumo:
 
     LINHA = (
         '<tr>\n'
-        '<td id="r_{link_completo}">'
+        '<td id="r_{link_completo}" class="tree-node" '
+        'style="padding-left: {recuo}em">'
+        '{conectores}'
         '<a href="#{link_completo}">{nome}</a>'
         '</td>\n'
         '<td>{pai}</td>\n'
@@ -106,6 +108,14 @@ class Resumo:
         '<td>{chave}</td>\n'
         '<td>{condicao}</td>\n'
         '</tr>\n')
+
+    CONTINUACAO = (
+        '<span class="tree-continuacao" aria-hidden="true" '
+        'style="left: {posicao}em"></span>')
+
+    RAMO = (
+        '<span class="tree-ramo {classe}" aria-hidden="true" '
+        'style="left: {posicao}em"></span>')
 
     LINHA_INDICE = (
         '<li>'
